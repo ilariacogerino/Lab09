@@ -8,10 +8,20 @@ class Controller:
         # the model, which implements the logic of the program and holds the data
         self._model = model
 
-    def handle_hello(self, e):
-        name = self._view.txt_name.value
-        if name is None or name == "":
-            self._view.create_alert("Inserire il nome")
+    def handleAnalizzaAeroporti(self, e):
+        self._view.txt_result.controls.clear()
+        distance = self._view.txt_distance.value
+
+        if distance == "" or distance is None:
+            self._view.txt_result.controls.clear()
+            self._view.txt_result.controls.append(ft.Text(f'Inserire una distanza minima!',
+                                                          color = "red"))
+            self._view.update_page()
             return
-        self._view.txt_result.controls.append(ft.Text(f"Hello, {name}!"))
+
+        self._model.buildGraph(distance)
+
+        self._view.txt_result.controls.append(ft.Text(f'Numero di vertici del grafo: {self._model.getNumNodes()}'))
+        self._view.txt_result.controls.append(ft.Text(f'Numero di archi del grafo: {self._model.getNumEdges()}'))
+
         self._view.update_page()
